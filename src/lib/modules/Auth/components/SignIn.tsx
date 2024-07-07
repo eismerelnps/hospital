@@ -54,10 +54,5 @@ export default function SignIn({ handleSignIn, formValues, handleInputChange }: 
             : <Button type='submit' onClick={() => { }}> Autenticarse<ArrowRightCircleIcon className="self-en inline-block  h-6 w-6  duration-200 text-active" /></Button>
         }
       </form>
-      {/* <div className="m-0 p-0">
-        <Link href={'forget-password'}>
-          <button type="button" className="text-slate-500  cursor-pointer underline">{t('forgot_password')}</button>
-        </Link>
-      </div> */}
     </div>)
 }
