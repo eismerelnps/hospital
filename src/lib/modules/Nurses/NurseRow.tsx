@@ -3,12 +3,8 @@ import { TableCell, TableRow } from "@/components/ui/table"
 import { Patient } from "@/lib/types/User/Patient"
 import { Eye, PencilIcon, TrashIcon } from "lucide-react"
 import Link from "next/link"
-
-type Props = {
-  patient: Patient
-}
-export default function PatientRow({ patient }: Props) {
-  const { image, id, username, first_name, last_name, email, phone_number } = patient
+export default function NurseRow({ nurse }: { nurse: Patient }) {
+  const { image, id, username, first_name, last_name, email, phone_number } = nurse
 
   return (
     <TableRow key={id}>
@@ -26,7 +22,7 @@ export default function PatientRow({ patient }: Props) {
       <TableCell>{email}</TableCell>
       <TableCell className="text-right flex gap-2 justify-end">
         <Button className="rounded-full" variant={'outline'} size={'icon'}>
-          <Link href={`/dashboard/patient/${id}`}><Eye size={18} /></Link>
+          <Link href={`/dashboard/nurses/${id}`}><Eye size={18} /></Link>
         </Button>
         <Button className="rounded-full" variant={'outline'} size={'icon'}>
           <PencilIcon size={18} className="text-blue-500" />

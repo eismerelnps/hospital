@@ -12,7 +12,7 @@ import { AppointmentType } from "@/lib/types/User/Appointment";
 export default function AppintmentContainer({ appointments }: { appointments: AppointmentType[] }) {
   return (
     <Table>
-      <TableCaption>Todos los pacientes</TableCaption>
+      <TableCaption>Todas las consultas</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Fecha</TableHead>

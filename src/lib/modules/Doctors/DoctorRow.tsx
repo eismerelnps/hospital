@@ -7,18 +7,11 @@ import Link from "next/link"
 type Props = {
   patient: Patient
 }
-export default function PatientRow({ patient }: Props) {
+export default function DoctorRow({ patient }: Props) {
   const { image, id, username, first_name, last_name, email, phone_number } = patient
 
   return (
     <TableRow key={id}>
-      <TableCell className="font-medium">
-        {/* <Image
-            src={image}
-            height={500}
-            width={500}
-            alt={first_name} /> */}
-      </TableCell>
       <TableCell>{first_name}</TableCell>
       <TableCell>{last_name}</TableCell>
       <TableCell>{username}</TableCell>
