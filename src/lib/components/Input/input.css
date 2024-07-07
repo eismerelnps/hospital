@@ -1,0 +1,90 @@
+:root {
+    --active-color: #2f5dff;
+
+    --inactive-color: #80868b;
+    --border-color: #dadce0;
+
+    --normal-font-size: 1rem;
+    --small-font-size: 0.75rem;
+
+    --input-width: 100%;
+
+    --input-bg-color: #0a155c;
+
+    --input-border-radius: 0.5rem;
+
+    --input-neon-color: #0c2bff;
+}
+
+.plasticine-item {
+    position: relative;
+    height: 48px;
+    width: var(--input-width);
+
+}
+
+
+.plasticine-item span {
+    position: absolute;
+    inset: -3px;
+
+    filter: blur(10px);
+    transition: 0.5s;
+}
+
+.plasticine-input {
+    position: absolute;
+    border: 1px solid var(--border-color);
+    border-radius: var(--input-border-radius);
+    inset: 0;
+    width: var(--input-width);
+    font-size: var(--normal-font-size);
+
+    outline: none;
+    padding: 1rem;
+    z-index: 1;
+    /* background: var(--input-bg-color); */
+    transition: 0.5s;
+}
+
+.plasticine-input:focus {
+    border: 1px solid var(--active-color);
+}
+
+.plasticine-input:focus~span {
+    inset: 0;
+    filter: blur(0);
+}
+
+.plasticine-label {
+    transition: 0.5s;
+}
+
+.plasticine-label {
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+    padding: 0.25rem;
+    /* background-color: #0a155c; */
+    /* color: var(--inactive-color); */
+    font-size: var(--normal-font-size);
+    transition: 0.5s;
+    cursor: text;
+    z-index: 2;
+}
+
+.plasticine-input:focus+.plasticine-label {
+    top: -0.8rem;
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    /* color: var(--active-color); */
+    z-index: 10;
+}
+
+.plasticine-input:not(:placeholder-shown).plasticine-input:not(:focus)+.plasticine-label {
+    top: -0.8rem;
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    /* color: var(--inactive-color); */
+    z-index: 10;
+}

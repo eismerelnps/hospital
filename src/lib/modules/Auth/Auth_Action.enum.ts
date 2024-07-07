@@ -1,0 +1,5 @@
+export enum AUTH_ACTION {
+  SIGN_GUEST = 'SIGN_GUEST',
+  SIGN_IN = 'SIGN_IN',
+  SIGN_UP = 'SIGN_UP',
+}
