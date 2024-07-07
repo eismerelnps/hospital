@@ -19,7 +19,8 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="en" className="bg-primary-50 text-primary-950 dark:bg-primary-950 dark:text-primary-50">
         <body className={inter.className}>
-          {children}</body>
+          {children}
+        </body>
       </html>
     </StoreProvider>
 
