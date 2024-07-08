@@ -5,13 +5,15 @@ import { Eye, PencilIcon, TrashIcon } from "lucide-react"
 import Link from "next/link"
 
 type Props = {
-  patient: Patient
+  patient: Patient,
+  onOpen: (id: string) => void
 }
-export default function DoctorRow({ patient }: Props) {
+export default function DoctorRow({ patient, onOpen }: Props) {
   const { image, id, username, first_name, last_name, email, phone_number } = patient
 
   return (
-    <TableRow key={id}>
+    <TableRow>
+      <TableCell></TableCell>
       <TableCell>{first_name}</TableCell>
       <TableCell>{last_name}</TableCell>
       <TableCell>{username}</TableCell>
@@ -24,10 +26,9 @@ export default function DoctorRow({ patient }: Props) {
         <Button className="rounded-full" variant={'outline'} size={'icon'}>
           <PencilIcon size={18} className="text-blue-500" />
         </Button>
-        <Button className="rounded-full" variant={'outline'} size={'icon'}>
+        <Button onClick={() => onOpen(id)} className="rounded-full" variant={'outline'} size={'icon'}>
           <TrashIcon size={18} className="text-red-500" />
         </Button>
-
       </TableCell>
     </TableRow>
   )

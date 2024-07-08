@@ -1,9 +1,9 @@
 type Person = {
-  id: number;
+  id: string;
   full_name: string;
 }
 export type AppointmentType = {
-  id: number;
+  id: string;
   consultation_date: string;
   reason_of_visit: string;
   symptoms: string;

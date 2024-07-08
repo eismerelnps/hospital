@@ -5,7 +5,7 @@ import { Eye, PencilIcon, TrashIcon } from 'lucide-react'
 import Link from 'next/link'
 import { formatInTimeZone } from "date-fns-tz";
 
-export default function AppointmentRow({ appointment }: { appointment: AppointmentType }) {
+export default function AppointmentRow({ appointment, onOpen }: { appointment: AppointmentType, onOpen: (id: string) => void }) {
   const { id, consultation_date, reason_of_visit, symptoms, diagnosis, prescribed_treatment, observation, test_conducted, patient, doctor } = appointment
 
   const date = consultation_date ? formatInTimeZone(consultation_date, "America/Havana", "dd-MM-yyyy") : 'Sin fecha';
@@ -25,10 +25,9 @@ export default function AppointmentRow({ appointment }: { appointment: Appointme
         <Button className="rounded-full" variant={'outline'} size={'icon'}>
           <PencilIcon size={18} className="text-blue-500" />
         </Button>
-        <Button className="rounded-full" variant={'outline'} size={'icon'}>
+        <Button onClick={() => onOpen(id)} className="rounded-full" variant={'outline'} size={'icon'}>
           <TrashIcon size={18} className="text-red-500" />
         </Button>
-
       </TableCell>
     </TableRow>
   )

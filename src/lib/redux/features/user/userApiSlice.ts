@@ -30,9 +30,17 @@ export const authApiSlice = createApi({
     // getTechnologies: builder.query<TechnologyType[], void>({
     //   query: () => `tech`
     // }),
-    deletePatient: builder.mutation<any, { email: string, password: string }>({
-      query: ({ email, password }) => ({
-        url: `login`,
+    deleteUser: builder.mutation<any, { id: string }>({
+      query: ({ id }) => ({
+        url: `users/${id}/`,
+        method: 'DELETE',
+        // body:
+      }),
+      // invalidatesTags: ['']
+    }),
+    deleteAppointment: builder.mutation<any, { id: string }>({
+      query: ({ id }) => ({
+        url: `users/${id}/`,
         method: 'DELETE',
         // body:
       }),
@@ -41,4 +49,4 @@ export const authApiSlice = createApi({
   }),
 });
 
-export const { useDeletePatientMutation } = authApiSlice
+export const { useDeleteUserMutation, useDeleteAppointmentMutation } = authApiSlice

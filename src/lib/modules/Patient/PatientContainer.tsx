@@ -3,8 +3,6 @@ import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -12,21 +10,43 @@ import {
 import PatientRow from "./PatientRow"
 import { Patient } from "@/lib/types/User/Patient"
 import { AlertDialogDemo } from "@/lib/components/AlertDialog/AlertDialog"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDeleteUserMutation } from "@/lib/redux/features/user/userApiSlice"
+import { useToast } from "@/components/ui/use-toast"
 
 type Props = {
   patients: [{ patient: number, user: Patient }]
 }
 
 export default function PatientContainer({ patients }: Props) {
-  const [deleteUser, setDeleteUser] = useState('');
-
+  const [deleteUser, { isLoading: isDeletingUser, isError: isDeleteError, isSuccess: isDeleted }] = useDeleteUserMutation();
+  const [deleteUserId, setDeleteUser] = useState('');
+  const { toast } = useToast()
   const onClose = () => setDeleteUser('');
-  const onDelete = (id: string) => setDeleteUser(id)
+  const onOpen = (id: string) => setDeleteUser(id);
+  const onDelete = async () => await deleteUser({ id: deleteUserId });
+
+  useEffect(() => {
+    isDeleteError && toast({
+      title: "Ha ocurrido un error",
+      description: "No ha sido posible eliminar el usuario",
+    });
+
+    isDeleted && toast({
+      title: "Usuario eliminado",
+      description: "Usuario eliminado con éxito.",
+    });
+  
+    return () => {};
+
+  }, [isDeleted, isDeleteError, isDeletingUser])
+  
+
 
   return (
     <>
-      {deleteUser && <AlertDialogDemo open={deleteUser !== ''} onClose={onClose} title="Borrar paciente" description="Estás seguro deseas borrar el paciente?" />}
+      {deleteUserId &&
+        <AlertDialogDemo open={deleteUserId !== ''} onAccept={onDelete} onClose={onClose} title="Borrar paciente" description="Estás seguro deseas borrar el paciente?" />}
       <Table>
         <TableCaption>Todos los pacientes</TableCaption>
         <TableHeader>
@@ -41,18 +61,11 @@ export default function PatientContainer({ patients }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {patients.map((patient) => (
-            <PatientRow patient={patient.user} onDelete={onDelete} />
+          {patients.map((patient, index) => (
+            <PatientRow key={index} patient={patient.user} onOpen={onOpen} />
           ))}
         </TableBody>
-        {/* <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter> */}
       </Table>
     </>
-
   )
 }
