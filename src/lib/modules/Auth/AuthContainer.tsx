@@ -8,10 +8,12 @@ import Image from 'next/image'
 import { AUTH_ACTION } from "./Auth_Action.enum";
 import useVerifyIdentifier from "./hooks/useVerifyIdentifier";
 import useVerifyPassword from "./hooks/useVerifyPassword ";
-import { startCreatingUser, startSignInAsGuest, startUserLogin } from "@/lib/redux/features/auth/authSlice";
+import { startCreatingUser, startUserLogin } from "@/lib/redux/features/auth/authSlice";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import { useForm } from "@/lib/hooks/useForm";
+import { useSignInMutation } from "@/lib/redux/features/auth/authApiSlice";
+import { toast } from "sonner";
 
 const mainChatId = process.env.NEXT_PUBLIC_MAIN_CHAT_ID
 
@@ -41,16 +43,15 @@ export default function AuthContainer() {
     password: '',
   });
 
+  const [signin, { isLoading: isSignInLoading, isSuccess: isSignInSuccess, isError: isErrorAddingTech }] = useSignInMutation()
+
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>, identifier: string, password: string) => {
     e.preventDefault();
     const isValidIdentifier = verifyIdentifier(identifier);
     if (isValidIdentifier) {
       if (password.trim().length > 0 && password.trim().length < 128) {
-        const data = await dispatch(startUserLogin(identifier, password, { success: "Realizado exitosamete", error: "Ha ocurrido un error" }))
-        if (data) router.replace(`/`)
-        // } else dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.WARN, message: t('enter_password') }));
-      }
-      // else dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.WARN, message: validation.message }));
+        signin({ email: identifier, password: password })
+      } 
     }
   }
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>, userData: any) => {
@@ -65,7 +66,7 @@ export default function AuthContainer() {
   }
 
   return (
-    <div id="auth" className="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 bg-primary-50 dark:bg-primary-950 px-[5%] py-24 lg:py-28 ">
+    <div id="auth" className="grid grid-rows-2 lg:grid-rows-1 lg:grid-cols-2 bg-primary-50 dark:bg-primary-950 px-[5%] py-24 lg:py-28 ">
 
       <article className='flex flex-col justify-center items-center lg:items-start px-4' >
         <div className='flex flex-col gap-2 lg:gap-4 justify-start items-center lg:items-start ' >
@@ -73,17 +74,6 @@ export default function AuthContainer() {
           <p className='text-md lg:text-lg opacity-70 text-center lg:text-start '></p>
         </div>
       </article>
-
-      <div className='flex justify-center items-center'>
-        <section className='relative size-44 lg:size-64'>
-          <Image
-            className='rounded-full'
-            fill
-            src={''}
-            alt='Communication Image'
-          />
-        </section>
-      </div>
 
       <div className="flex justify-center items-center">
         <div className=" flex flex-col items-center justify-center gap-4 w-72 lg:w-96 ">

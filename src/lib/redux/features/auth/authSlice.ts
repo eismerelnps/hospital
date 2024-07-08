@@ -1,13 +1,6 @@
 import { uiFinishLoading, uiSetLoading, uiSetNotification } from "@/lib/redux/slices/uiSlice";
 import { Dispatch } from 'redux';
-// import { RootState } from "../store";
-// import { HTTP_METHODS } from "@/lib/interfaces/General/HTTP_METHODS.enum";
-// import { addUser, editUser, resetUser } from "../slices/authSlice";
-// import { CreateUserFormInterface } from "@/lib/interfaces/Users/CreateUserFormInterface";
-// import { UI_LOADING_STATE } from "@/lib/interfaces/UI/UI_Loading_State-enum";
-// import { NOTIFICATION_TYPE } from "@/lib/interfaces/UI/Notification/NotificationType.enum";
-// import { IUser } from "@/lib/interfaces/Users/IUser";
-import { useTranslations } from "next-intl";
+
 import { RootState } from '../../store';
 import { HTTP_METHODS } from '../../HTTP_METHODS.enum';
 import { addUser, editUser } from '../../slices/authSlice';
@@ -22,7 +15,7 @@ const handleRequest = async (
   body: any = undefined,
   headers: any = [],
 ) => {
-  const response = await fetch(`${apiUrl}/${apiVersion}/auth/${url}`, {
+  const response = await fetch(`http://127.0.0.1:8000/${url}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -85,94 +78,5 @@ export const startCreatingUser = (userData: any) => {
     }
   };
 };
-// Async action to sign in as guest
-export const startSignInAsGuest = (userData: { name: string, password: string }) => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    // dispatch(uiSetLoading(UI_LOADING_STATE.SIGN_GUEST));
-    try {
-      const data = await handleRequest('sign-in-as-guest', HTTP_METHODS.POST, { name: userData.name, password: userData.password });
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.SIGN_GUEST));
 
-      if (data && data.user) {
-        dispatch(addUser(data.user));
-        // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.SUCCESS, message: "Log in successfully" }));
-        // dispatch(uiFinishLoading(UI_LOADING_STATE.SIGN_GUEST));
-        return data;
-      } else {
-        throw new Error('Unknown error');
-      }
-
-    } catch (error: any) {
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.SIGN_GUEST));
-      // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.ERROR, message: "Error updating" }));
-    }
-  };
-};
-// Async action to sign in as guest
-export const startLoginOutAsGuest = (_id: string) => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    //dispatch(uiSetLoading(UI_LOADING_STATE.SIGN_GUEST));
-    try {
-      const data = await handleRequest('log-out-as-guest', HTTP_METHODS.DELETE, { _id: _id });
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.SIGN_GUEST));
-
-      if (data) {
-        return data;
-      } else {
-        throw new Error('Unknown error');
-      }
-
-    } catch (error: any) {
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.SIGN_GUEST));
-      // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.ERROR, message: "Error" }));
-    }
-  };
-};
-
-//UPDATE A USER INFO BY ID
-export const startUpdatingUser = (userData: any) => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    // dispatch(uiSetLoading(UI_LOADING_STATE.UPDATE_USER_INFO));
-    try {
-      const data = await handleRequest(`${userData._id}`, HTTP_METHODS.PUT, userData);
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.UPDATE_USER_INFO));
-
-      if (data && data.user) {
-        dispatch(editUser(data.user));
-        // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.SUCCESS, message: "Actualizado" }));
-        // dispatch(uiFinishLoading(UI_LOADING_STATE.UPDATE_USER_INFO));
-        return data;
-      } else {
-        throw new Error('Unknown error');
-      }
-
-    } catch (error: any) {
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.UPDATE_USER_INFO));
-      // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.ERROR, message: "Error updating" }));
-    }
-  };
-};
-// Async action to login
-export const startRecoveringPassword = (identifier: string) => {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    // dispatch(uiSetLoading(UI_LOADING_STATE.FORGET_PASSWORD));
-    try {
-      const data = await handleRequest('forgot-password', HTTP_METHODS.POST, { identifier: identifier });
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.FORGET_PASSWORD));
-
-      if (data && data.user) {
-        dispatch(addUser(data.user));
-        // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.SUCCESS, message: "Log in successfully" }));
-        // dispatch(uiFinishLoading(UI_LOADING_STATE.FORGET_PASSWORD));
-        return data.user;
-      } else {
-        throw new Error('Unknown error');
-      }
-
-    } catch (error: any) {
-      // dispatch(uiFinishLoading(UI_LOADING_STATE.FORGET_PASSWORD));
-      // dispatch(uiSetNotification({ type: NOTIFICATION_TYPE.ERROR, message: error.message }));
-    }
-  };
-};
 
