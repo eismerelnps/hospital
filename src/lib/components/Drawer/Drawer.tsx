@@ -9,12 +9,12 @@ export default function Drawer() {
   const path = usePathname()
 
   const options: DrawerOptionType[] = [
-    {
-      icon: <HomeIcon className='icon' />,
-      heading: "Inicio",
-      url: '/dashboard/',
-      active: path === '/dashboard'
-    },
+    // {
+    //   icon: <HomeIcon className='icon' />,
+    //   heading: "Inicio",
+    //   url: '/dashboard/',
+    //   active: path === '/dashboard'
+    // },
     {
       icon: <Package className='icon' />,
       heading: "Pacientes",

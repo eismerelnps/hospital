@@ -49,6 +49,16 @@ export const userApiSlice = createApi({
       }),
       invalidatesTags: ['UserType']
     }),
+
+    addUser: builder.mutation<UserType, { user: any }>({
+      query: ({ user }) => ({
+        url: `insert/user/`,
+        method: 'POST',
+        body: user
+      }),
+      invalidatesTags: ['UserType']
+    }),
+
     editAppointment: builder.mutation<AppointmentType, { appointment: any }>({
       query: ({ appointment }) => ({
         url: `appointments/${appointment.id}/`,
@@ -61,4 +71,4 @@ export const userApiSlice = createApi({
   }),
 });
 
-export const { useDeleteUserMutation, useDeleteAppointmentMutation, useEditUSerMutation, useEditAppointmentMutation } = userApiSlice
+export const { useDeleteUserMutation, useDeleteAppointmentMutation, useEditUSerMutation, useEditAppointmentMutation, useAddUserMutation } = userApiSlice

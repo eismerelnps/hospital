@@ -4,20 +4,19 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "@/lib/hooks/useForm";
 import { userPlaceholder } from "@/lib/placeholder/UserPlaceholder";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { PencilIcon } from "lucide-react";
+import { PencilIcon, Plus } from "lucide-react";
 import { Patient } from "@/lib/types/User/Patient";
 import { Input } from "@/components/ui/input";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { UserType } from "@/lib/types/User/UserType";
-import { SerializedError } from "@reduxjs/toolkit";
-import { useEditUSerMutation } from "@/lib/redux/features/user/userApiSlice";
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast"
+import { useAddUserMutation, useEditUSerMutation } from "@/lib/redux/features/user/userApiSlice";
+
+
 type Props = {
   open: boolean,
   onClose: () => void,
   patient?: Patient,
-  seeUser: boolean
+  seeUser?: boolean
 }
 
 
@@ -30,10 +29,18 @@ export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
       }
       : {
         ...userPlaceholder,
-        image: null
+        image: null,
+        password: "hola1234",
+        username: "",
+        gender: "female",
+        address: "Guantanamo",
+        date_of_birth: "2024-05-02",
+        user_type: 'nurses'
       }
   );
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
+  const [addUser, { isLoading: isAddingUser, isError: isAddError, isSuccess: isAdded }] = useAddUserMutation();
+
   const { toast } = useToast()
 
   useEffect(() => {
@@ -54,13 +61,17 @@ export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
 
   const onSave = () => {
     editUser({ user: formValues });
+  };
+
+  const onAddNew = async () => {
+    await addUser({ user: formValues })
   }
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{seeUser ? 'Info de la enfermera' : 'Editar enfermera'}</DialogTitle>
+          <DialogTitle>{!patient ? 'Agregar enfermera' : seeUser ? 'Info de la enfermera' : 'Editar enfermera'}</DialogTitle>
           <DialogDescription>
             {seeUser
               ? ''
@@ -80,16 +91,22 @@ export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
         {!seeUser &&
           <>
             {
-              isEditingUser ?
-                <Button disabled>
-                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                  Editando
+              !patient ?
+                <Button onClick={onAddNew}>
+                  <Plus size={16} />
+                  Agregar
                 </Button>
                 :
-                <Button onClick={onSave}>
-                  <PencilIcon size={16} />
-                  Editar
-                </Button>
+                isEditingUser ?
+                  <Button disabled>
+                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    Editando
+                  </Button>
+                  :
+                  <Button onClick={onSave}>
+                    <PencilIcon size={16} />
+                    Editar
+                  </Button>
             }</>
         }
 

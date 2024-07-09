@@ -16,7 +16,7 @@ type Props = {
   open: boolean,
   onClose: () => void,
   appointment?: AppointmentType,
-  seeUser: boolean
+  seeUser?: boolean
 }
 
 const emptyAppointment: AppointmentType = {

@@ -5,7 +5,7 @@ import React from 'react'
 export default function layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
       <main className=" w-full h-screen flex justify-center items-center bg-primary-50 dark:bg-primary-950">
         <div className='basis-0 hidden lg:basis-1/5 h-screen lg:flex items-center justify-start gap-2 '>
           <Drawer />
