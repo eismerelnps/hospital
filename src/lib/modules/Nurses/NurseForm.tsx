@@ -13,18 +13,6 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { useEditUSerMutation } from "@/lib/redux/features/user/userApiSlice";
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast"
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-
 type Props = {
   open: boolean,
   onClose: () => void,
@@ -32,20 +20,31 @@ type Props = {
   seeUser: boolean
 }
 
+
 export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
-  const [formValues, handleInputChange] = useForm(patient ? patient : userPlaceholder);
+  const [formValues, handleInputChange] = useForm(
+    patient
+      ? {
+        ...patient,
+        image: null
+      }
+      : {
+        ...userPlaceholder,
+        image: null
+      }
+  );
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
   const { toast } = useToast()
 
   useEffect(() => {
     isEditError && toast({
       title: "Ha ocurrido un error",
-      description: "No ha sido posible eliminar el usuario",
+      description: "No ha sido posible editar el usuario",
     });
 
     isEdited && toast({
       title: "Usuario eliminado",
-      description: "Usuario eliminado con éxito.",
+      description: "Usuario editado con éxito.",
     });
 
     return () => {
@@ -78,21 +77,21 @@ export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
           <Input disabled={seeUser} type="text" value={formValues.phone_number} onChange={handleInputChange} name="phone_number" placeholder="Número de teléfono" />
         </form>
         {/* <DialogFooter> */}
-          {!seeUser &&
-            <>
-              {
-                isEditingUser ?
-                  <Button disabled>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                    Editando
-                  </Button>
-                  :
-                  <Button onClick={onSave}>
-                    <PencilIcon size={16} />
-                    Editar
-                  </Button>
-              }</>
-          }
+        {!seeUser &&
+          <>
+            {
+              isEditingUser ?
+                <Button disabled>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Editando
+                </Button>
+                :
+                <Button onClick={onSave}>
+                  <PencilIcon size={16} />
+                  Editar
+                </Button>
+            }</>
+        }
 
         {/* </DialogFooter> */}
       </DialogContent>

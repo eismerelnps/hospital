@@ -5,7 +5,7 @@ import { useForm } from "@/lib/hooks/useForm";
 import { userPlaceholder } from "@/lib/placeholder/UserPlaceholder";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { PencilIcon } from "lucide-react";
-import { useEditUSerMutation } from "@/lib/redux/features/user/userApiSlice";
+import { useEditAppointmentMutation, useEditUSerMutation } from "@/lib/redux/features/user/userApiSlice";
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast"
 import { AppointmentType, NewAppointmentType } from "@/lib/types/User/Appointment";
@@ -35,6 +35,7 @@ const emptyAppointment: AppointmentType = {
 export default function AppointmentForm({ open, onClose, appointment, seeUser }: Props) {
   const [formValues, handleInputChange] = useForm(appointment ? appointment : emptyAppointment);
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
+  const [editAppointment, { isLoading: isEditingAppointment, isError: isEditAppointmentError, isSuccess: isEditedAppointment }] = useEditAppointmentMutation();
   const { toast } = useToast();
   const [isValid, notification] = useValidateAppointment(formValues)
 
@@ -46,7 +47,7 @@ export default function AppointmentForm({ open, onClose, appointment, seeUser }:
 
     isEdited && toast({
       title: "Usuario eliminado",
-      description: "Usuario eliminado con éxito.",
+      description: "Usuario editado con éxito.",
     });
 
     return () => {
@@ -54,21 +55,32 @@ export default function AppointmentForm({ open, onClose, appointment, seeUser }:
     }
   }, [isEditError, isEdited])
 
-  const onSave = () => async () => {
-    toast({
-      title: "Ha ocurrido un error",
-      description: "No ha sido posible eliminar el usuario",
-    });
-    // if (isValid) {
-    //   await editUser({ user: formValues });
-    // } else {
-    //   toast({
-    //     title: "Ha ocurrido un error",
-    //     description: "No ha sido posible eliminar el usuario",
-    //   });
-    // }
+  const onSave = async () => {
+    console.log('formValues', formValues)
+    editAppointment(formValues);
+    // toast({
+    //   title: "Ha ocurrido un error",
+    //   description: "No ha sido posible editar el usuario",
+    // });
+  };
 
-  }
+  useEffect(() => {
+    isEditAppointmentError && toast({
+      title: "Ha ocurrido un error",
+      description: "No ha sido posible eliminar la consulta",
+    });
+
+    isEditedAppointment && toast({
+      title: "Consulta editada",
+      description: "Consulta editada con éxito.",
+    });
+
+
+    return () => {
+
+    }
+  }, [isEditError, isEdited])
+
 
   return (
     <Dialog open={open} onOpenChange={onClose}>

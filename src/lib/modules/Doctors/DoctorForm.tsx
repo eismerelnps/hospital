@@ -19,19 +19,28 @@ type Props = {
 }
 
 export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
-  const [formValues, handleInputChange] = useForm(patient ? patient : userPlaceholder);
+  const [formValues, handleInputChange] = useForm(
+    patient ?
+      {
+        ...patient,
+        image: null
+      } :
+      {
+        ...userPlaceholder,
+        image: null
+      });
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
   const { toast } = useToast()
 
   useEffect(() => {
     isEditError && toast({
       title: "Ha ocurrido un error",
-      description: "No ha sido posible eliminar el usuario",
+      description: "No ha sido posible editar el usuario",
     });
 
     isEdited && toast({
       title: "Usuario eliminado",
-      description: "Usuario eliminado con éxito.",
+      description: "Usuario editado con éxito.",
     });
 
     return () => {
@@ -39,9 +48,9 @@ export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
     }
   }, [isEditError, isEdited])
 
-  const onSave = () => async () => await editUser({ user: formValues });
+  const onSave = async () => await editUser({ user: formValues });
 
-  
+
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -49,11 +58,11 @@ export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
         <DialogHeader>
           <DialogTitle>{seeUser ? 'Info del doctor' : 'Editar doctor'}</DialogTitle>
           <DialogDescription>
-            {seeUser 
-            ? '' 
+            {seeUser
+              ? ''
               : 'Por favor verifique todos los campos antes de guardar.'
             }
-            
+
           </DialogDescription>
         </DialogHeader>
 

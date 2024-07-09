@@ -3,7 +3,9 @@ import PatientContainer from "@/lib/modules/Patient/PatientContainer"
 async function getData() {
   const res = await fetch(
     'http://127.0.0.1:8000/patients',
+    
     {
+      cache: 'no-store',
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

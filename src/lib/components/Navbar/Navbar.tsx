@@ -1,4 +1,5 @@
 'use client'
+import { PlusIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
@@ -8,6 +9,8 @@ export default function Navbar() {
       <div className='fixed top-0 right-0 left-0  h-16  flex'>
         <div className='basis-0 lg:basis-1/5'></div>
         <div className='basis-full lg:basis-4/5 h-full border-b border-primary-950/20 dark:border-primary-50'>
+
+          <PlusIcon />
         </div>
       </div>
     </nav>

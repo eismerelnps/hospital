@@ -1,5 +1,5 @@
 'use client'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@/lib/hooks/useForm";
 import { userPlaceholder } from "@/lib/placeholder/UserPlaceholder";
@@ -7,9 +7,6 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { PencilIcon } from "lucide-react";
 import { Patient } from "@/lib/types/User/Patient";
 import { Input } from "@/components/ui/input";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { UserType } from "@/lib/types/User/UserType";
-import { SerializedError } from "@reduxjs/toolkit";
 import { useEditUSerMutation } from "@/lib/redux/features/user/userApiSlice";
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast"
@@ -22,7 +19,17 @@ type Props = {
 }
 
 export default function PatientForm({ open, onClose, patient, seeUser }: Props) {
-  const [formValues, handleInputChange] = useForm(patient ? patient : userPlaceholder);
+  const [formValues, handleInputChange] = useForm(
+    patient
+      ? {
+        ...patient,
+        image: null
+      }
+      : {
+        ...userPlaceholder,
+        image: null
+      }
+  );
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
   const { toast } = useToast()
 
@@ -33,8 +40,8 @@ export default function PatientForm({ open, onClose, patient, seeUser }: Props) 
     });
 
     isEdited && toast({
-      title: "Usuario eliminado",
-      description: "Usuario eliminado con éxito.",
+      title: "Usuario editado",
+      description: "Usuario editado con éxito.",
     });
 
     return () => {
@@ -42,7 +49,7 @@ export default function PatientForm({ open, onClose, patient, seeUser }: Props) 
     }
   }, [isEditError, isEdited])
 
-  const onSave = (e: any) => async () => {
+  const onSave = async (e: any) => {
     e.preventDefault();
     console.log('edit')
     await editUser({ user: formValues });
@@ -58,7 +65,6 @@ export default function PatientForm({ open, onClose, patient, seeUser }: Props) 
               ? ''
               : 'Por favor verifique todos los campos antes de guardar.'
             }
-
           </DialogDescription>
         </DialogHeader>
 
@@ -68,26 +74,22 @@ export default function PatientForm({ open, onClose, patient, seeUser }: Props) 
           <Input disabled={seeUser} type="email" value={formValues.email} onChange={handleInputChange} name="email" placeholder="Correo electrónico" />
           <Input disabled={seeUser} type="text" value={formValues.phone_number} onChange={handleInputChange} name="phone_number" placeholder="Número de teléfono" />
         </form>
-        {/* <DialogFooter> */}
-          {!seeUser &&
-            <>
-              {
-                isEditingUser ?
-                  <Button disabled>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                    Editando
-                  </Button>
-                  :
-                  <Button onClick={onSave}>
-                    <PencilIcon size={16} />
-                    Editar
-                  </Button>
-              }</>
-          }
-
-        {/* </DialogFooter> */}
+        {!seeUser &&
+          <>
+            {
+              isEditingUser ?
+                <Button disabled>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Editando
+                </Button>
+                :
+                <Button onClick={onSave}>
+                  <PencilIcon size={16} />
+                  Editar
+                </Button>
+            }</>
+        }
       </DialogContent>
     </Dialog>
-
   )
 }

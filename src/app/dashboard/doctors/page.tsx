@@ -5,6 +5,8 @@ async function getData() {
   const res = await fetch(
     'http://127.0.0.1:8000/doctors',
     {
+      cache: 'no-store',
+
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
