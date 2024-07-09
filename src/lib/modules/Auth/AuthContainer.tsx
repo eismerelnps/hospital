@@ -12,7 +12,7 @@ import { startCreatingUser, startUserLogin } from "@/lib/redux/features/auth/aut
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import { useForm } from "@/lib/hooks/useForm";
-import { useSignInMutation } from "@/lib/redux/features/auth/authApiSlice";
+// import { useSignInMutation } from "@/lib/redux/features/auth/authApiSlice";
 import { toast } from "sonner";
 
 const mainChatId = process.env.NEXT_PUBLIC_MAIN_CHAT_ID
@@ -43,14 +43,14 @@ export default function AuthContainer() {
     password: '',
   });
 
-  const [signin, { isLoading: isSignInLoading, isSuccess: isSignInSuccess, isError: isErrorAddingTech }] = useSignInMutation()
+  // const [signin, { isLoading: isSignInLoading, isSuccess: isSignInSuccess, isError: isErrorAddingTech }] = useSignInMutation()
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>, identifier: string, password: string) => {
     e.preventDefault();
     const isValidIdentifier = verifyIdentifier(identifier);
     if (isValidIdentifier) {
       if (password.trim().length > 0 && password.trim().length < 128) {
-        signin({ email: identifier, password: password })
+        // signin({ email: identifier, password: password })
       } 
     }
   }
@@ -79,10 +79,10 @@ export default function AuthContainer() {
         <div className=" flex flex-col items-center justify-center gap-4 w-72 lg:w-96 ">
           <section className="w-full flex flex-row rounded-lg justify-between bg-primary-50 dark:bg-primary-950">
             <button onClick={() => setAuthAction(AUTH_ACTION.SIGN_IN)} className={`p-3 lg:p-4 text-nowrap rounded-lg font-bold ${authAction === AUTH_ACTION.SIGN_IN && 'bg-primary-500 text-white w-full'}`}>Autenticarse</button>
-            <button onClick={() => setAuthAction(AUTH_ACTION.SIGN_UP)} className={`p-3 lg:p-4 text-nowrap rounded-lg font-bold ${authAction === AUTH_ACTION.SIGN_UP && 'bg-primary-500 text-white w-full'}`}>Crear Cuenta</button>
+            {/* <button onClick={() => setAuthAction(AUTH_ACTION.SIGN_UP)} className={`p-3 lg:p-4 text-nowrap rounded-lg font-bold ${authAction === AUTH_ACTION.SIGN_UP && 'bg-primary-500 text-white w-full'}`}>Crear Cuenta</button> */}
           </section >
           {authAction === AUTH_ACTION.SIGN_IN && <SignIn handleInputChange={handleInputChange} formValues={formValues} handleSignIn={handleSignIn} showPassword={showPassword} togglePasswordVisibility={togglePasswordVisibility} />}
-          {authAction === AUTH_ACTION.SIGN_UP && <SignUp handleInputChange={handleInputChange} formValues={formValues} handleSignUp={handleSignUp} showPassword={showPassword} togglePasswordVisibility={togglePasswordVisibility} />}
+          {/* {authAction === AUTH_ACTION.SIGN_UP && <SignUp handleInputChange={handleInputChange} formValues={formValues} handleSignUp={handleSignUp} showPassword={showPassword} togglePasswordVisibility={togglePasswordVisibility} />} */}
         </div>
       </div>
     </div >

@@ -2,13 +2,15 @@ import { Button } from "@/components/ui/button"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { Patient } from "@/lib/types/User/Patient"
 import { Eye, PencilIcon, TrashIcon } from "lucide-react"
-import Link from "next/link"
 
 type Props = {
   patient: Patient,
-  onOpen: (id: string) => void
+  onOpen: (id: string) => void,
+  onEdit: (nurse: Patient) => void,
+  onSeeUser: (nurse: Patient) => void,
+  onCloseSeeUSer: () => void
 }
-export default function DoctorRow({ patient, onOpen }: Props) {
+export default function DoctorRow({ patient, onOpen, onEdit, onSeeUser, onCloseSeeUSer }: Props) {
   const { image, id, username, first_name, last_name, email, phone_number } = patient
 
   return (
@@ -20,15 +22,16 @@ export default function DoctorRow({ patient, onOpen }: Props) {
       <TableCell>{phone_number}</TableCell>
       <TableCell>{email}</TableCell>
       <TableCell className="text-right flex gap-2 justify-end">
-        <Button className="rounded-full" variant={'outline'} size={'icon'}>
-          <Link href={`/dashboard/patient/${id}`}><Eye size={18} /></Link>
+        <Button onClick={() => onSeeUser(patient)} className="rounded-full" variant={'outline'} size={'icon'}>
+          <Eye size={18} />
         </Button>
-        <Button className="rounded-full" variant={'outline'} size={'icon'}>
+        <Button onClick={() => onEdit(patient)} className="rounded-full" variant={'outline'} size={'icon'}>
           <PencilIcon size={18} className="text-blue-500" />
         </Button>
         <Button onClick={() => onOpen(id)} className="rounded-full" variant={'outline'} size={'icon'}>
           <TrashIcon size={18} className="text-red-500" />
         </Button>
+
       </TableCell>
     </TableRow>
   )

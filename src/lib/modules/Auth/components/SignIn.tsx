@@ -1,24 +1,29 @@
 'use client'
-import { useForm } from '@/lib/hooks/useForm'
-import { useAppSelector } from '@/lib/redux/hooks'
 import { ArrowPathIcon } from '@heroicons/react/20/solid'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ShowHidePass from './ShowHidePass'
 import Input from '@/lib/components/Input/Input'
 import { Button } from '@/components/ui/button'
 import { ArrowRightCircleIcon } from 'lucide-react'
 import useVerifyIdentifier from '../hooks/useVerifyIdentifier'
-import { useSignInMutation } from '@/lib/redux/features/auth/authApiSlice'
+// import { useSignInMutation } from '@/lib/redux/features/auth/authApiSlice'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { useAppDispatch } from '@/lib/redux/hooks'
+import { login } from '@/lib/redux/slices/authSlice'
+import { signIn } from '@/lib/redux/features/auth/authApi'
 
 export default function SignIn({ formValues, handleInputChange }: any) {
   const { validation, verifyIdentifier } = useVerifyIdentifier();
   const { identifier, password } = formValues;
-  const [signin, { isLoading: isSignInLoading, isSuccess: isSignInSuccess, isError: isErrorAddingTech }] = useSignInMutation()
+  // const [signin, { data: authData, isLoading: isSignInLoading, isSuccess: isSignInSuccess, isError: isErrorAddingTech }] = useSignInMutation()
+  const [isSignInLoading, setSignInLoading] = useState(false)
 
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [visible, setVisible] = useState<boolean>(false)
   const togglePasswordVisibility = (): void => {
-    setVisible(!visible)
+    setVisible(!visible);
   }
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>, identifier: string, password: string) => {
     e.preventDefault();
@@ -38,7 +43,18 @@ export default function SignIn({ formValues, handleInputChange }: any) {
           onClick: () => console.log("Undo"),
         },
       })
-    } else signin({ email: identifier, password: password })
+    } else {
+      setSignInLoading(true)
+      const res: any = await signIn(identifier, password);
+      const data = await res.json();
+      setSignInLoading(false)
+      console.log(data)
+      if (data && data.user) {
+        dispatch(login(data))
+        router.push('/dashboard/patient')
+
+      }
+    }
   }
 
   return (

@@ -3,17 +3,18 @@ import React from 'react'
 import './input.css'
 
 export type Props = {
-  autocomplete: string;
+  autocomplete?: string;
   value: string;
   name: string;
   id: string;
   type: string;
-  placeholder: string;
-  onChange: any;
-  className: string;
+  placeholder?: string;
+  onChange?: any;
+  className?: string;
+  disabled?: boolean
 }
 
-export default function Input({ autocomplete, value, name, id, type, placeholder, onChange, className }: Props) {
+export default function Input({ autocomplete, disabled, value, name, id, type, placeholder, onChange, className }: Props) {
   //POV:  esto es una brujeria para solucionar e problema de al hacer click sobre el label no se posicionaba
   const handleLabelClick = () => {
     document.getElementById(id)?.focus(); // Enfoca el input al hacer clic en el label
@@ -22,6 +23,7 @@ export default function Input({ autocomplete, value, name, id, type, placeholder
   return (
     <div className={` plasticine-item  z-[1] `}>
       <input
+        disabled={disabled}
         value={value}
         autoComplete={autocomplete}
         name={name}
