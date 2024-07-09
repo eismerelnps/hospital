@@ -27,7 +27,17 @@ export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
       } :
       {
         ...userPlaceholder,
-        image: null
+        image: null,
+        password: "hola1234",
+        username: "",
+        gender: "female",
+        address: "Guantanamo",
+        date_of_birth: "2024-05-02",
+        user_type: 'doctors',
+        doctor: "jdoe123",
+        nurse: "nurse123",
+        specialty: "MGI",
+        years_experience: 12,
       });
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
   const [addUser, { isLoading: isAddingUser, isError: isAddError, isSuccess: isAdded }] = useAddUserMutation();
@@ -48,7 +58,24 @@ export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
     return () => {
 
     }
-  }, [isEditError, isEdited])
+  }, [isEditError, isEdited]);
+
+
+  useEffect(() => {
+    isAddError && toast({
+      title: "Ha ocurrido un error",
+      description: "No ha sido posible agregar el doctor",
+    });
+
+    isAdded && toast({
+      title: "Usuario agregado",
+      description: "Doctor agregado con éxito.",
+    });
+
+    return () => {
+
+    }
+  }, [isAddError, isAdded])
 
   const onSave = async () => await editUser({ user: formValues });
 
@@ -61,7 +88,7 @@ export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{seeUser ? 'Info del doctor' : 'Editar doctor'}</DialogTitle>
+          <DialogTitle>{!patient ? "Agregar doctor" : seeUser ? 'Info del doctor' : 'Editar doctor'}</DialogTitle>
           <DialogDescription>
             {seeUser
               ? ''
@@ -72,6 +99,8 @@ export default function DoctorForm({ open, onClose, patient, seeUser }: Props) {
         </DialogHeader>
 
         <form className="flex flex-col gap-4">
+          <Input disabled={seeUser} type="text" value={formValues.username} onChange={handleInputChange} name="username" placeholder="Nombre de usuario" />
+
           <Input disabled={seeUser} type="text" value={formValues.first_name} onChange={handleInputChange} name="first_name" placeholder="Nombre" />
           <Input disabled={seeUser} type="text" value={formValues.last_name} onChange={handleInputChange} name="last_name" placeholder="Apellidos" />
           <Input disabled={seeUser} type="email" value={formValues.email} onChange={handleInputChange} name="email" placeholder="Correo electrónico" />

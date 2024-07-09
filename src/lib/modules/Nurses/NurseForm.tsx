@@ -35,7 +35,8 @@ export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
         gender: "female",
         address: "Guantanamo",
         date_of_birth: "2024-05-02",
-        user_type: 'nurses'
+        user_type: 'nurses',
+        categoria: "pricipiante"
       }
   );
   const [editUser, { isLoading: isEditingUser, isError: isEditError, isSuccess: isEdited }] = useEditUSerMutation();
@@ -82,6 +83,8 @@ export default function NurseForm({ open, onClose, patient, seeUser }: Props) {
         </DialogHeader>
 
         <form className="flex flex-col gap-4">
+          <Input disabled={seeUser} type="text" value={formValues.username} onChange={handleInputChange} name="username" placeholder="Nombre de usuario" />
+
           <Input disabled={seeUser} type="text" value={formValues.first_name} onChange={handleInputChange} name="first_name" placeholder="Nombre" />
           <Input disabled={seeUser} type="text" value={formValues.last_name} onChange={handleInputChange} name="last_name" placeholder="Apellidos" />
           <Input disabled={seeUser} type="email" value={formValues.email} onChange={handleInputChange} name="email" placeholder="Correo electrónico" />
