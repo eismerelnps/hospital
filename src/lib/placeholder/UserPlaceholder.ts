@@ -7,7 +7,7 @@ export const userPlaceholder: UserType = {
   email: "",
   name: "",
   surnames: "",
-  birthDate: new Date(),
+  birthDate: "2002-04-20",
   address: {
     province: "",
     municipality: "",

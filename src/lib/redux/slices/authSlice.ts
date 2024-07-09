@@ -1,18 +1,7 @@
-import { USER_ROLE, UserType } from '@/lib/types/User/UserType';
+import { userPlaceholder } from '@/lib/placeholder/UserPlaceholder';
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState: UserType = {
-  _id: '',
-  role: USER_ROLE.PATIENT,
-  email: '',
-  name: '',
-  image: '',
-  surnames: '',
-  birthDate: undefined,
-  address: undefined,
-  gender: 'OTHER',
-  phone: ''
-};
+const initialState = userPlaceholder
 
 
 export const authSlice = createSlice({
@@ -20,10 +9,14 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state = action.payload;
+      console.log(action.payload.user)
+      state = {
+        ...action.payload.user,
+        birthDate: "2002-02-03"
+      };
     },
     logout: (state) => {
-      state = initialState;
+      state = userPlaceholder;
     },
     addUser: (state, action) => {
       return action.payload;

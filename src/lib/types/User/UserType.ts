@@ -16,7 +16,7 @@ export type UserType = {
   email: string;
   name: string;
   surnames: string;
-  birthDate: Date | undefined;
+  birthDate: any;
   address: AddressType | undefined;
   gender: "MALE" | "FEMALE" | "OTHER";
   phone: string;

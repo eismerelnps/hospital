@@ -48,11 +48,13 @@ export default function SignIn({ formValues, handleInputChange }: any) {
       const res: any = await signIn(identifier, password);
       const data = await res.json();
       setSignInLoading(false)
-      console.log(data)
       if (data && data.user) {
         dispatch(login(data))
         router.push('/dashboard/patient')
-
+      } else {
+        toast("Ha ocurrido un error", {
+          description: "Por favor revise su usuario o contraseña",
+        })
       }
     }
   }
